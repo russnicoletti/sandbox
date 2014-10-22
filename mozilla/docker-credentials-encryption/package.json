@@ -1,0 +1,14 @@
+{
+  "name": "encryption-worker-example",
+  "version": "0.0.0",
+  "private": true,
+  "description": "POC worker encryption ==============",
+  "main": "main.js",
+  "dependencies": {
+    "taskcluster-client":               "0.5.1", 
+                "crypto":               "0.0.3",
+     "node-cryptojs-aes":               "0.4.0",
+                "assert":               "1.1.1",
+        "node-bignumber":               "1.2.1"
+  }
+}
