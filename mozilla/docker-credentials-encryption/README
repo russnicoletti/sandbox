@@ -1,0 +1,18 @@
+docker-credentials-encryption
+
+This is POC for bug 1053940. That is, it is a POC for providing encryption and decryption of data as follows: Data is encrypted using a random symmetric key, the symmetric key is encrypted with a public RSA key, and both the encrypted data and the encrypted symmetric key are returned. Decryption happens by taking as input the encryption response and unencrypting the symmetric key using the private RSA key, and then using that to unencrypt the encrypted data.
+
+The 'node-bignumber' module is used to provide the RSA functionality. It is native javascript (good) but requires (in hexidecimal) the modulus, public exponent, and private exponent from the pem file (not so good). This information can be found using the following openssl command: 'openssl rsa -in privkey.pem -text -noout'
+
+Currently, this data is provided to the 'WorkerEncryption' object by the 'main' demo code. It would presumably come from a server when the code is in its final form.
+
+Based on https://github.com/raluca-elena/telemetry-analysis-base/blob/master/encrypt.js
+
+At present, the process is failing decrypting the encrypted data. Last few lines of console log:
+
+decrypted symmetric key: iFWRMf65L0Vz+F7vvxPmF7EuSWmCHWOlyfYYjricRTah57vNiFJUKsA51t/saId4YOaZ5wBDERk3hBn/p2MD1N0kjZJN4dX1j6NL76IhTYAIXV2ICdtXMylInqdJhC4h1mJLfJLI9oyduG1YWJBIeerrqGQBD11XQkYctHiV8mo=
+decrypting data: {"ct":"K+GY3D2NnqHAqKblfsDnUBbEW9wBCWbuvRyr4ty6W8PDOeiys/N26q2hZ5YZh4ye","iv":"04215700237dcc941d53c8679c29e474","s":"206a7973cf5e9637"}
+/Users/russ/sandbox/mozilla/docker-credentials-encryption/node_modules/node-cryptojs-aes/lib/cipher-core.js:362
+                words[offset + i] ^= block[i];
+                                          ^
+TypeError: Cannot read property '0' of undefined
