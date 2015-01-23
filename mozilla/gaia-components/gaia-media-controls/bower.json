@@ -1,11 +1,11 @@
 {
-  "name": "gaia-video-control-bar",
-  "version": "0.5.1",
-  "homepage": "https://github.com/gaia-components/gaia-video-control-bar",
+  "name": "gaia-video-controls",
+  "version": "0.0.1",
+  "homepage": "https://github.com/russnicoletti/gaia-video-controls",
   "authors": [
     "Russ Nicoletti"
   ],
-  "main": "gaia-video-control-bar.js",
+  "main": "gaia-video-controls.js",
   "license": "MIT",
   "ignore": [
     "**/.*",

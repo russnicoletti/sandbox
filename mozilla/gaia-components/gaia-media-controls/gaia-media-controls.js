@@ -3,11 +3,8 @@
  */
 
 var Component = require('gaia-component');
-var VideoControls = require('./lib/video_controls');
+var MediaControls = require('./lib/media_controls');
   
-// Load 'gaia-icons' font-family
-require('gaia-icons');
-
 function toCamelCase(str) {
   return str.replace(/\-(.)/g, function replacer(str, p1) {
     return p1.toUpperCase();
@@ -31,80 +28,52 @@ var gaiaMediaControls = Component.register('gaia-media-controls', {
 
     var dom = {};
     var ids = [
-        'elapsed-text', 'elapsedTime', 'bufferedTime', 'timeBackground', 'duration-text',
-        'playHead', 'slider-wrapper', 'seek-backward', 'play', 'seek-forward'
+        'bufferedTime', 'duration-text', 'elapsed-text', 'elapsedTime',
+        'fullscreen-button', 'play', 'playHead', 'seek-backward',
+        'seek-forward', 'slider-wrapper', 'timeBackground'
     ];
 
-    console.log('reading dom elements...');
     ids.forEach(function createElementRef(name) {
       dom[toCamelCase(name)] = shadowRoot.getElementById(name);
     });
-    console.log('done reading dom elements...');
 
-    this.videoControls = new VideoControls(dom);
-    console.log('done instantiating VideoControls');
+    dom.mediaControlsComponent = this;
+
+    this.mediaControls = new MediaControls(dom);
+    console.log('done instantiating MediaControls');
   },
 
-  foo: function() {
-    this.videoControls.foo(); 
+  initialize: function(playerElement) {
+    this.mediaControls.initialize(playerElement);
   },
 
-  enablePlayButton: function() {
-    this.videoControls.enablePlayButton();
-  },
-
-  enablePauseButton: function() {
-    this.videoControls.enablePauseButton();
-  },
-
-  setMediaDurationText: function(duration) {
-    this.videoControls.setMediaDurationText(duration);
-  },
-
-  updateSlider: function(player) {
-    this.videoControls.updateSlider(player);
-  },
-
-  handleSliderTouchStart: function(event, player) {
-    console.log(Date.now() + '--gaia-media-controls, handleSliderTouchStart begin');
-    console.log(Date.now() + '--event.changedTouches: ' + event.changedTouches);
-    console.log(Date.now() + '--player: ' + player);
-    console.log(Date.now() + '--Invoking VideoControls to handle touch start event');
-    this.videoControls.sliderTouchStart(event, player);
-  },
-
-  handleSliderTouchMove: function(event, player) {
-    this.videoControls.sliderTouchMove(event, player);
-  },
-
-  handleSliderTouchEnd: function(event, player, pause) {
-    this.videoControls.sliderTouchEnd(event, player, pause);
+  updateSlider: function() {
+    this.mediaControls.updateSlider();
   },
 
   template: `
  
   <style>
 
-@font-face {
-	font-family: "gaia-icons";
-	src: url("fonts/gaia-icons.ttf") format("truetype");
-	font-weight: 500;
-	font-style: normal;
-}
-
-[data-icon]:before,
-.ligature-icons {
-	font-family: "gaia-icons";
-	content: attr(data-icon);
-	display: inline-block;
-	font-weight: 500;
-	font-style: normal;
-	text-decoration: inherit;
-	text-transform: none;
-	text-rendering: optimizeLegibility;
-	font-size: 30px;
-	-webkit-font-smoothing: antialiased;
-}
+  @font-face {
+  	font-family: "gaia-icons";
+  	src: url("fonts/gaia-icons.ttf") format("truetype");
+  	font-weight: 500;
+  	font-style: normal;
+  }
+  
+  [data-icon]:before {
+  	font-family: "gaia-icons";
+  	content: attr(data-icon);
+  	display: inline-block;
+  	font-weight: 500;
+  	font-style: normal;
+  	text-decoration: inherit;
+  	text-transform: none;
+  	text-rendering: optimizeLegibility;
+  	font-size: 30px;
+  	-webkit-font-smoothing: antialiased;
+  }
 
   footer {
     background: rgba(0, 0, 0, 0.75);
